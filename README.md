@@ -1,6 +1,6 @@
-# Play! Framework 2 Concurrent Requests Limiter
+# Play! 2 Concurrent Requests Limiter
 
-This Play! 2 app shows how to limit the concurrently processed requests in an async/non-blocking application.
+This Play! Framework 2 app shows how to limit the concurrently processed requests in an async/non-blocking application.
 Requests exceeding this limit are queued and processed as soon as other requests are finished.
 
 This may be useful in such a situation:

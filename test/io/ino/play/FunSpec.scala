@@ -1,7 +1,6 @@
 package io.ino.play
 
 import akka.util.Timeout
-import iteratees.FeedDownloads._
 import org.scalatest.{BeforeAndAfterEach, EitherValues}
 import org.scalatestplus.play.{PlaySpec, OneServerPerSuite}
 import play.api.GlobalSettings
@@ -66,8 +65,8 @@ class FunSpec extends PlaySpec with OneServerPerSuite with EitherValues with Bef
       val responseFutures = (1 to 40).map(i => wsUrl("/resource1").withQueryString("i" -> i.toString).get())
       
       val responses = await(Future.sequence(responseFutures))
-      // 10 concurent + 10 queued requests are allowed, so we expect 19 rejected requests
-      responses.filter(_.status == 429) must have size 19
+      // 10 concurent + 10 queued requests are allowed, so we expect < 20 rejected requests
+      responses.filter(_.status == 429).size must (be > 0 and be < 20)
     }
 
   }

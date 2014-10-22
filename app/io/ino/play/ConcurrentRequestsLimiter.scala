@@ -6,11 +6,17 @@ import play.api.mvc.Results.TooManyRequest
 import scala.concurrent.Future
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.ConcurrentLinkedQueue
-import play.api.Play
 import play.api.Play.current
 import scala.concurrent.Promise
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
+/**
+ * This filter limits the concurrently processed requests (configurable via
+ * "maxProcessedRequests", default 100) and queues requests exceeding this limit.
+ * The maximum number of requests to queue can be configured as well
+ * (via `maxQueuedRequests`, default 1000), so that requests that would grow the
+ * queue over this limit are rejected with status 429 ("Too many requests").
+ */
 object ConcurrentRequestsLimiter extends Filter {
   
   private type FilterFun = RequestHeader => Future[Result]
