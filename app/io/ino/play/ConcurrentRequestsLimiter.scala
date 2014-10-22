@@ -25,7 +25,7 @@ object ConcurrentRequestsLimiter extends Filter {
   private val queue = new ConcurrentLinkedQueue[(Promise[Result], FilterFun, RequestHeader)]()
   
   private lazy val maxProcessedRequests = current.configuration.getInt("maxProcessedRequests").getOrElse(100)
-  private lazy val maxQueuedRequests = current.configuration.getInt("maxQueuedRequests").getOrElse(1000)
+  private lazy val maxQueuedRequests = current.configuration.getInt("maxQueuedRequests").getOrElse(10000)
   
   def apply(next: FilterFun)(request: RequestHeader): Future[Result] = {
     Logger.debug(s"Comparing active=${active.get} with maxProcessedRequests=$maxProcessedRequests")
