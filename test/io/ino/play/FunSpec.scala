@@ -3,8 +3,6 @@ package io.ino.play
 import akka.util.Timeout
 import org.scalatest.{BeforeAndAfterEach, EitherValues}
 import org.scalatestplus.play.{PlaySpec, OneServerPerSuite}
-import play.api.GlobalSettings
-import play.api.libs.json._
 import play.api.mvc.Action
 import play.api.mvc.Results.Ok
 import play.api.test.FakeApplication
@@ -15,7 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger
 import akka.util.Timeout.durationToTimeout
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import java.util.concurrent.atomic.AtomicReference
 
 class FunSpec extends PlaySpec with OneServerPerSuite with EitherValues with BeforeAndAfterEach {
 
@@ -37,8 +34,7 @@ class FunSpec extends PlaySpec with OneServerPerSuite with EitherValues with Bef
           activeRequests.synchronized {
             maxActiveRequests = Math.max(maxActiveRequests, activeRequests.incrementAndGet)
           }
-          
-          import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
           Promise.timeout({
             val active = activeRequests.decrementAndGet
             val i = request.queryString("i").head

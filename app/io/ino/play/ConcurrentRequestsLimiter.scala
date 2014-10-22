@@ -58,7 +58,7 @@ object ConcurrentRequestsLimiter extends Filter {
     val result = next(request)
     
     result.onComplete { _ =>
-      
+
       active.decrementAndGet()
     
       Option(queue.poll()).foreach { case (p, next, request) =>
